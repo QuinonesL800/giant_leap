@@ -17,12 +17,11 @@ class RidesController < ApplicationController
   end
 
   def create
-    r = Ride.new
-    r.id = params["id"]
-    r.passenger_name = params["passenger_name"]
-    r.origin = params["origin"]
-    r.destination = params["destination"]
-    r.save
+    ride = Ride.new
+    ride.passenger_name = params["passenger_name"]
+    ride.origin = params["origin"]
+    ride.destination = params["destination"]
+    ride.save
 
   end
 
@@ -31,6 +30,16 @@ class RidesController < ApplicationController
   end
 
   def update
+    ride = Ride.find_by(id: params["id"])
+    if params["driver_id"].present?
+    ride.driver_id = params["driver_id"]
+    else
+      if params["complete"].present?
+        ride.complete = true
+      end
+    end
+    ride.save
+    redirect_to "/rides"
 
   end
 
